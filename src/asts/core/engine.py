@@ -40,6 +40,11 @@ class BacktestConfig:
     slippage_pct: float = 0.0          # adverse fraction applied to fills
     commission_per_trade: float = 0.0  # flat $ per fill
     warmup_bars: int = 200             # skip until indicators are populated
+    # Optional trading window. Indicators are always computed over the full
+    # history; only the *trading* calendar is restricted to [start, end].
+    # This is what makes walk-forward out-of-sample testing possible.
+    trade_start: "object | None" = None  # datetime.date or None
+    trade_end: "object | None" = None    # datetime.date or None
 
 
 @dataclass
@@ -72,6 +77,13 @@ class BacktestEngine:
             sym: {d: i for i, d in enumerate(b.dates)} for sym, b in bars.items()
         }
         self.calendar = list(self.market.dates)
+        start, end = self.cfg.trade_start, self.cfg.trade_end
+        if start is not None or end is not None:
+            self.calendar = [
+                d
+                for d in self.calendar
+                if (start is None or d >= start) and (end is None or d <= end)
+            ]
 
         # Pending orders keyed for execution on the following day.
         self._pending_entries: list[EntryOrder] = []

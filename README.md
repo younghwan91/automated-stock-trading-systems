@@ -46,9 +46,11 @@ src/asts/
 │   ├── features.py        # precompute the canonical indicator set
 │   ├── synthetic.py       # offline reproducible OHLCV universe
 │   └── yahoo.py           # optional yfinance loader (cached to Parquet)
+├── analysis/              # robustness: montecarlo, sensitivity, walkforward
 ├── metrics.py             # CAGR, MaxDD, MAR, Sharpe, win-rate, payoff, exposure
+├── plotting.py            # 3-panel tear sheet (optional, matplotlib)
 ├── backtest.py            # high-level run_backtest(...) API
-└── cli.py                 # `asts run` / `asts list`
+└── cli.py                 # run / montecarlo / sensitivity / walkforward / list
 ```
 
 ## Install
@@ -92,6 +94,7 @@ asts run --suite suite7 --synthetic --plot results/suite7.png
 | `examples/run_suite.py` | Every system vs the combined suites (the diversification table below) |
 | `examples/custom_system.py` | Adding an 8th system (Donchian breakout) in ~20 lines |
 | `examples/real_data.py` | Running `suite6` on real yfinance data (cached to CSV) |
+| `examples/robustness.py` | Monte Carlo + sizing sensitivity + walk-forward |
 
 ### Tear sheet
 
@@ -133,6 +136,25 @@ designed to lose a little most of the time and pay off in crashes.
 > Absolute numbers depend on the (synthetic) data and **will not** match the
 > book, which uses the real survivorship-bias-free 1995–2019 universe. The
 > *qualitative* signatures reproduce faithfully (see `docs/systems_spec.md`).
+
+## Robustness & validation
+
+A single backtest is one lucky path. The `analysis` package adds the three
+checks a professional process requires (full guide:
+**[`docs/robustness.md`](docs/robustness.md)**):
+
+```bash
+asts montecarlo  --suite suite6 --synthetic --sims 2000   # outcome distribution + tail risk
+asts sensitivity --suite suite6 --synthetic               # sizing trade-off grid (Ch. 5)
+asts walkforward --suite suite6 --synthetic               # tune in-sample, validate OOS
+```
+
+- **Monte Carlo** — block/iid bootstrap of daily returns → percentiles of
+  CAGR/MaxDD and `P(maxDD < −20%)`, `P(loss)`.
+- **Sizing sensitivity** — same rules, varied `risk_pct`×`max_pct_size`; CAGR and
+  drawdown rise together, reproducing the book's Chapter 5 point.
+- **Walk-forward** — optimizes the percent-risk lever in-sample, validates
+  out-of-sample, and compares against a fixed-2% baseline to expose overfitting.
 
 ## The seven systems
 
