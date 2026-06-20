@@ -71,6 +71,16 @@ def cmd_run(args) -> int:
 
         pd.DataFrame([t.__dict__ for t in out.trades]).to_csv(args.trades_csv, index=False)
         print(f"Trade ledger written to {args.trades_csv}")
+    if args.plot:
+        import pandas as pd
+
+        from .plotting import plot_tearsheet
+
+        benchmark = universe[args.market]["close"].copy()
+        benchmark.index = pd.to_datetime(benchmark.index)
+        plot_tearsheet(out.equity, benchmark=benchmark, title=f"ASTS — {args.suite}",
+                       savepath=args.plot)
+        print(f"Tear sheet written to {args.plot}")
     return 0
 
 
@@ -104,6 +114,7 @@ def build_parser() -> argparse.ArgumentParser:
     r.add_argument("--commission", type=float, default=0.0, help="flat $ per fill")
     r.add_argument("--csv", default="", help="write equity curve to CSV")
     r.add_argument("--trades-csv", default="", help="write trade ledger to CSV")
+    r.add_argument("--plot", default="", help="write a PNG/SVG tear sheet to this path")
     r.set_defaults(func=cmd_run)
 
     ls = sub.add_parser("list", help="list available systems and suites")
