@@ -6,7 +6,7 @@ stay declarative. Money is tracked in account currency; shares are integers.
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from datetime import date
 from enum import Enum
 

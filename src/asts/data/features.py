@@ -27,23 +27,23 @@ def compute_features(df: pd.DataFrame) -> pd.DataFrame:
         raise ValueError(f"OHLCV frame missing columns: {missing}")
     df = df.sort_index()
 
-    h, l, c, v = df["high"], df["low"], df["close"], df["volume"]
+    h, low, c, v = df["high"], df["low"], df["close"], df["volume"]
 
     # Trend / moving averages
     for n in (25, 50, 100, 150, 200):
         df[f"sma_{n}"] = ind.sma(c, n)
 
     # Volatility
-    df["atr_10"] = ind.atr(h, l, c, 10)
-    df["atr_20"] = ind.atr(h, l, c, 20)
-    df["atr_40"] = ind.atr(h, l, c, 40)
-    df["atrp_10"] = ind.atr_percent(h, l, c, 10)
+    df["atr_10"] = ind.atr(h, low, c, 10)
+    df["atr_20"] = ind.atr(h, low, c, 20)
+    df["atr_40"] = ind.atr(h, low, c, 40)
+    df["atrp_10"] = ind.atr_percent(h, low, c, 10)
     df["hv_100"] = ind.historic_volatility(c, 100)
 
     # Momentum / oscillators
     df["rsi_3"] = ind.rsi(c, 3)
     df["rsi_4"] = ind.rsi(c, 4)
-    df["adx_7"] = ind.adx(h, l, c, 7)
+    df["adx_7"] = ind.adx(h, low, c, 7)
     df["roc_200"] = ind.roc(c, 200)
 
     # Liquidity
