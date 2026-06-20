@@ -2,7 +2,9 @@
 
 Kept dependency-light: ``yfinance`` is only imported when this loader is used,
 so the core engine and the synthetic pipeline have no third-party data deps.
-Downloaded frames are cached as Parquet under ``cache_dir``.
+Downloaded frames are cached as CSV under ``cache_dir`` (no parquet engine
+required); set ``ASTS_CACHE_PARQUET=1`` to prefer Parquet when pyarrow is
+available.
 """
 
 from __future__ import annotations
@@ -10,6 +12,29 @@ from __future__ import annotations
 import os
 
 import pandas as pd
+
+_USE_PARQUET = os.environ.get("ASTS_CACHE_PARQUET") == "1"
+
+
+def _read_cache(path_no_ext: str) -> pd.DataFrame | None:
+    if _USE_PARQUET and os.path.exists(path_no_ext + ".parquet"):
+        try:
+            return pd.read_parquet(path_no_ext + ".parquet")
+        except Exception:
+            pass
+    if os.path.exists(path_no_ext + ".csv"):
+        return pd.read_csv(path_no_ext + ".csv", index_col=0, parse_dates=True)
+    return None
+
+
+def _write_cache(df: pd.DataFrame, path_no_ext: str) -> None:
+    if _USE_PARQUET:
+        try:
+            df.to_parquet(path_no_ext + ".parquet")
+            return
+        except Exception:
+            pass  # fall back to CSV if no parquet engine is installed
+    df.to_csv(path_no_ext + ".csv")
 
 
 def _normalise(df: pd.DataFrame) -> pd.DataFrame:
@@ -33,9 +58,10 @@ def load_symbol(
 ) -> pd.DataFrame:
     """Download (or load from cache) a single symbol's OHLCV history."""
     os.makedirs(cache_dir, exist_ok=True)
-    cache = os.path.join(cache_dir, f"{symbol}_{start}_{end}.parquet")
-    if os.path.exists(cache):
-        return pd.read_parquet(cache)
+    cache = os.path.join(cache_dir, f"{symbol}_{start}_{end}")
+    cached = _read_cache(cache)
+    if cached is not None:
+        return cached
 
     import yfinance as yf  # local import: optional dependency
 
@@ -45,7 +71,7 @@ def load_symbol(
     if isinstance(raw.columns, pd.MultiIndex):
         raw.columns = raw.columns.get_level_values(0)
     df = _normalise(raw)
-    df.to_parquet(cache)
+    _write_cache(df, cache)
     return df
 
 

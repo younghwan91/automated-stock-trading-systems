@@ -80,7 +80,26 @@ asts run --suite s1 --synthetic --stocks 80 --start 2008-01-01 --end 2018-12-31
 # Real data via yfinance (needs the [data] extra)
 asts run --suite suite6 --symbols AAPL,MSFT,NVDA,AMD,JPM,XOM \
     --start 2010-01-01 --end 2019-12-31 --csv equity.csv --trades-csv trades.csv
+
+# Render a tear sheet (equity vs benchmark / drawdown / exposure)
+asts run --suite suite7 --synthetic --plot results/suite7.png
 ```
+
+### Examples
+
+| Script | What it shows |
+|---|---|
+| `examples/run_suite.py` | Every system vs the combined suites (the diversification table below) |
+| `examples/custom_system.py` | Adding an 8th system (Donchian breakout) in ~20 lines |
+| `examples/real_data.py` | Running `suite6` on real yfinance data (cached to CSV) |
+
+### Tear sheet
+
+`--plot` (or `asts.plotting.plot_tearsheet`) renders a three-panel sheet — the
+strategy equity (log) against the benchmark, the underwater drawdown curve, and
+net long/short exposure:
+
+![tear sheet](docs/tearsheet_example.png)
 
 Or from Python:
 
