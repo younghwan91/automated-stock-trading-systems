@@ -1,0 +1,7 @@
+pandas>=1.5
+numpy>=1.23
+pyyaml>=6.0
+# optional: real market data
+# yfinance>=0.2
+# optional: plotting
+# matplotlib>=3.6

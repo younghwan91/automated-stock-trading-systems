@@ -1,0 +1,40 @@
+# Reference suite definitions (mirrors asts.systems.build_suite).
+# This file documents the allocations; the CLI reads them from code, but you can
+# load it yourself to drive custom runs.
+
+defaults:
+  risk_pct: 0.02        # percent-risk per trade
+  max_pct_size: 0.10    # percent-size cap per position
+  max_positions: 10     # per system
+  starting_equity: 100000
+  slippage_pct: 0.0
+  commission_per_trade: 0.0
+
+suites:
+  suite3:                # Chapter 7
+    long:
+      s1: 0.50           # Long Trend High Momentum
+      s3: 0.50           # Long Mean Reversion Selloff
+    short:
+      s2: 1.00           # Short RSI Thrust
+
+  suite6:                # Chapter 9
+    long:
+      s1: 0.25
+      s4: 0.25           # Long Trend Low Volatility
+      s3: 0.25
+      s5: 0.25           # Long MR High ADX Reversal
+    short:
+      s2: 0.50
+      s6: 0.50           # Short MR High Six-Day Surge
+
+  suite7:                # Chapter 10 (full suite with the catastrophe hedge)
+    long:
+      s1: 0.25
+      s4: 0.25
+      s3: 0.25
+      s5: 0.25
+    short:
+      s2: 0.40
+      s6: 0.40
+      s7: 0.20           # Catastrophe Hedge (LTTF short on SPY)
