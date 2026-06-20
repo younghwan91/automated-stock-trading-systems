@@ -25,9 +25,6 @@ from __future__ import annotations
 import math
 from dataclasses import dataclass, field
 
-import numpy as np
-
-from ..systems import build_suite
 from .position_sizing import calculate_shares
 from .portfolio import Portfolio
 from .system import Bars, TradingSystem
@@ -108,14 +105,14 @@ class BacktestEngine:
                 continue  # symbol did not trade today; order expires
             if self.pf.has(order.system, order.symbol):
                 continue  # already in this name for this system
-            o, h, l, c = b.open[i], b.high[i], b.low[i], b.close[i]
+            o, h, low = b.open[i], b.high[i], b.low[i]
             fill = None
             if order.order_type is OrderType.MARKET_ON_OPEN:
                 fill = o
             elif order.order_type is OrderType.LIMIT:
                 lim = order.limit_price
                 if order.direction is Direction.LONG:
-                    if l <= lim:                       # touched our buy limit
+                    if low <= lim:                     # touched our buy limit
                         fill = min(o, lim)
                 else:  # SHORT sell-limit
                     if h >= lim:
@@ -178,12 +175,12 @@ class BacktestEngine:
             if i is None:
                 continue
             b = self.bars[pos.symbol]
-            o, h, l = b.open[i], b.high[i], b.low[i]
+            o, h, low = b.open[i], b.high[i], b.low[i]
             if pos.direction is Direction.LONG:
                 stop = pos.initial_stop
                 if pos.trail_pct is not None:
                     stop = max(stop, pos.extreme_close * (1.0 - pos.trail_pct))
-                if l <= stop:
+                if low <= stop:
                     fill = self._slip_sell(min(o, stop))
                     self.pf.close(key, dt=dt, price=fill, reason="stop_loss",
                                   commission=self.cfg.commission_per_trade)
