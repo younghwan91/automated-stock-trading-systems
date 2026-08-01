@@ -207,3 +207,33 @@ pytest            # 22 tests: indicators, sizing, accounting, engine integration
 This project is an independent, educational reimplementation of publicly
 described strategies. It is **not** affiliated with or endorsed by the author or
 publisher. Nothing here is financial advice.
+
+
+---
+
+## ⭐ Found this useful?
+
+If this project helped you, please **[⭐ Star it](https://github.com/younghwan91/automated-stock-trading-systems)** — it boosts discoverability so more developers can find it.
+
+- 🐛 Bugs & questions → [Issues](https://github.com/younghwan91/automated-stock-trading-systems/issues)
+- 📈 [Follow @younghwan91](https://github.com/younghwan91) for updates
+
+## Related projects — Korean equity quant stack
+
+Part of an open-source stack spanning market-data, fundamentals & news REST APIs, a collection pipeline, backtesting and alpha research.
+
+| Project | What it is |
+|---|---|
+| **[kiwoom-rest-api](https://github.com/younghwan91/kiwoom-rest-api)** | Kiwoom Securities REST API — 207 endpoints + real-time WebSocket |
+| **[krx-fundamentals-api](https://github.com/younghwan91/krx-fundamentals-api)** | Korean corporate fundamentals REST API — financials, ratios, dividends, screening (DART + KRX + Naver) |
+| **[krx-news-rest-api](https://github.com/younghwan91/krx-news-rest-api)** | Korean stock news & disclosure REST API (FastAPI + Redis) |
+| **[kr-quant-airflow](https://github.com/younghwan91/kr-quant-airflow)** | Airflow pipeline collecting Korean market data into TimescaleDB |
+| **[kr-quant](https://github.com/younghwan91/kr-quant)** | KOSPI/KOSDAQ alpha research with enforced walk-forward & random negative-control guardrails |
+| **[quantbox-engine](https://github.com/younghwan91/quantbox-engine)** | Crypto-futures backtest & execution engine — zero lookahead, backtest↔live parity |
+| **[opt_portfolio](https://github.com/younghwan91/opt_portfolio)** | VAA-based tactical asset-allocation backtest & management system |
+
+## Author
+
+**Younghwan Chae** · [GitHub @younghwan91](https://github.com/younghwan91) · [LinkedIn](https://www.linkedin.com/in/younghwan-chae/)
+
+See the full open-source quant stack on my [profile](https://github.com/younghwan91).
