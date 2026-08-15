@@ -227,7 +227,7 @@ Part of an open-source stack spanning market-data, fundamentals & news REST APIs
 | **[kiwoom-rest-api](https://github.com/younghwan91/kiwoom-rest-api)** | Kiwoom Securities REST API — 207 endpoints + real-time WebSocket |
 | **[krx-fundamentals-api](https://github.com/younghwan91/krx-fundamentals-api)** | Korean corporate fundamentals REST API — financials, ratios, dividends, screening (DART + KRX + Naver) |
 | **[krx-news-rest-api](https://github.com/younghwan91/krx-news-rest-api)** | Korean stock news & disclosure REST API (FastAPI + Redis) |
-| **[kr-quant-airflow](https://github.com/younghwan91/kr-quant-airflow)** | Airflow pipeline collecting Korean market data into TimescaleDB |
+| **[quant-airflow](https://github.com/younghwan91/quant-airflow)** | Airflow pipeline collecting Korean market data into TimescaleDB |
 | **[kr-quant](https://github.com/younghwan91/kr-quant)** | KOSPI/KOSDAQ alpha research with enforced walk-forward & random negative-control guardrails |
 | **[quantbox-engine](https://github.com/younghwan91/quantbox-engine)** | Crypto-futures backtest & execution engine — zero lookahead, backtest↔live parity |
 | **[opt_portfolio](https://github.com/younghwan91/opt_portfolio)** | VAA-based tactical asset-allocation backtest & management system |
