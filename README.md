@@ -17,7 +17,7 @@ short, trend-following & mean-reversion) smooths the equity curve, slashes
 drawdowns, and lifts risk-adjusted return well above buy-and-hold.
 
 > ⚠️ **Not investment advice.** Research/education only. Backtested performance
-> does not predict future results. See `LICENSE`.
+> does not predict future results. See [`DISCLAIMER.md`](DISCLAIMER.md).
 
 ---
 
