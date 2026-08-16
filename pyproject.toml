@@ -3,7 +3,9 @@ requires = ["setuptools>=64", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "asts"
+# 배포 이름은 asts-bensdorp — PyPI 의 `asts` 는 GrammaTech 의 tree-sitter 패키지가
+# 이미 점유하고 있다. import 이름은 `asts` 그대로다(src/asts, CLI `asts`).
+name = "asts-bensdorp"
 version = "0.1.0"
 description = "Automated Stock Trading Systems — a research-grade backtesting engine implementing the seven non-correlated systems from Laurens Bensdorp's book."
 readme = "README.md"
