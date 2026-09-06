@@ -43,12 +43,11 @@ From Python: `run_backtest(build_suite("suite7"), universe)`.
 
 ## What's inside
 
-An event-driven daily engine with next-day execution — limit and market orders,
-ATR stops, trailing stops, profit targets, time exits, slippage, commission —
-plus Bensdorp position sizing (2% percent-risk capped by 10% percent-size, max
-10 positions/system). Rule tables for all seven systems:
-[`docs/systems_spec.md`](docs/systems_spec.md). `examples/custom_system.py` adds
-an eighth (Donchian breakout) by subclassing `TradingSystem`.
+An event-driven daily engine with next-day execution, protective stops,
+slippage/commission modeling, and Bensdorp-style position sizing (2%
+percent-risk, max 10 positions/system). Rule tables for all seven systems:
+[`docs/systems_spec.md`](docs/systems_spec.md). `examples/custom_system.py`
+shows how to add your own by subclassing `TradingSystem`.
 
 ## Architecture
 
@@ -76,22 +75,14 @@ flowchart LR
 
     SYS["systems.build_suite\n(System1..7 registry)"]
 
-    subgraph Engine["core.engine.BacktestEngine.run() — per trading day"]
-        E1["execute scheduled exits (MOO)"]
-        E2["execute pending entries"]
-        E3["check protective stops\n(ATR / trailing)"]
-        E4["execute scheduled exits (MOC)"]
-        E5["generate_signals:\nsystem.exit_signal / entry_signal\n+ position_sizing.calculate_shares"]
-        E1 --> E2 --> E3 --> E4 --> E5 --> E1
-    end
+    ENG["BacktestEngine.run()\n(daily loop: exits → entries → stops → signals)"]
 
-    PF["core.portfolio.Portfolio\n(positions, cash, equity curve, closed trades)"]
+    PF["Portfolio\n(positions, cash, equity curve, closed trades)"]
 
     subgraph Output["Results"]
-        MET["metrics.compute_metrics\n(CAGR, MAR, drawdown, ...)"]
+        MET["metrics.compute_metrics"]
         PLOT["plotting.plot_tearsheet"]
-        CSV["equity / trade-ledger CSV"]
-        AN["analysis: montecarlo, sensitivity,\nwalkforward (re-run engine per trial)"]
+        AN["analysis: montecarlo, sensitivity, walkforward"]
     end
 
     CLI --> Data
@@ -100,15 +91,12 @@ flowchart LR
     YHO --> FEAT
     FEAT --> BARS
     CLI --> SYS
-    BARS --> Engine
-    SYS --> Engine
-    Engine --> PF
+    BARS --> ENG
+    SYS --> ENG
+    ENG --> PF
     PF --> MET
     PF --> PLOT
-    PF --> CSV
     MET --> AN
-    BARS --> AN
-    SYS --> AN
 ```
 
 ## Development
@@ -141,30 +129,4 @@ future results.
 
 ---
 
-## ⭐ Found this useful?
-
-If this project helped you, please **[⭐ Star it](https://github.com/younghwan91/automated-stock-trading-systems)** — it boosts discoverability so more developers can find it.
-
-- 🐛 Bugs & questions → [Issues](https://github.com/younghwan91/automated-stock-trading-systems/issues)
-- 📈 [Follow @younghwan91](https://github.com/younghwan91) for updates
-
-## Related projects — open-source quant stack
-
-Part of an open-source stack spanning Korean equities, US equities and crypto. Each repository stands on its own.
-
-| Market | Project | What it is |
-|---|---|---|
-| 🇰🇷 Korean equities | **[kiwoom-client](https://github.com/younghwan91/kiwoom-client)** | Kiwoom Securities REST API client — full domestic-equity endpoint coverage, real-time WebSocket, sync + async (`pip install kiwoom-client`) |
-| 🇰🇷 Korean equities | **[krx-fundamentals-client](https://github.com/younghwan91/krx-fundamentals-client)** | Korean corporate fundamentals Python client library — financial statements, valuation, dividends, screening (DART + KRX + Naver) |
-| 🇰🇷 Korean equities | **[krx-news-client](https://github.com/younghwan91/krx-news-client)** | Korean market news & disclosure Python client library (DART + Hankyung + TheBell + Toss) |
-| 🇰🇷 Korean equities | **[fin-checkup](https://github.com/younghwan91/fin-checkup)** | Telegram alerts for risk disclosures + a DART/SEC financial health checkup — reports measurements and facts, never a recommendation |
-| 🇰🇷 Korean equities | **[quant-airflow](https://github.com/younghwan91/quant-airflow)** | Airflow pipeline collecting Korean market data into TimescaleDB — delisted names included, so downstream backtests aren't survivorship-biased |
-| 🇰🇷 Korean equities | **[kr-quant](https://github.com/younghwan91/kr-quant)** | KOSPI/KOSDAQ alpha research — walk-forward, random null controls, purged CV and Deflated Sharpe enforced as CI guardrails |
-| 🇺🇸 US equities | **[portfolio-research](https://github.com/younghwan91/portfolio-research)** | US equity factor engine — walk-forward gated by Deflated Sharpe and PBO on point-in-time, survivorship-bias-free data (plus tactical ETF allocation: 9 pre-registered, 0 adopted) |
-| ₿ Crypto | **[quantbox-engine](https://github.com/younghwan91/quantbox-engine)** | Crypto futures backtest & execution engine — zero lookahead, backtest↔live parity |
-
-## Author
-
-**Younghwan Chae** · [GitHub @younghwan91](https://github.com/younghwan91) · [LinkedIn](https://www.linkedin.com/in/younghwan-chae/)
-
-See the full open-source quant stack on my [profile](https://github.com/younghwan91).
+**Younghwan Chae** · [GitHub @younghwan91](https://github.com/younghwan91) · [LinkedIn](https://www.linkedin.com/in/younghwan-chae/) · [Issues](https://github.com/younghwan91/automated-stock-trading-systems/issues)
