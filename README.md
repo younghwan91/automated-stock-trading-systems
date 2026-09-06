@@ -39,7 +39,9 @@ python examples/run_suite.py         # the comparison pictured above
 asts run --suite suite6 --symbols AAPL,MSFT,JPM --start 2010-01-01 --end 2019-12-31
 ```
 
-From Python: `run_backtest(build_suite("suite7"), universe)`.
+From Python: `run_backtest(build_suite("suite7"), universe)`, where `universe` is a
+`{symbol: OHLCV DataFrame}` dict — see `examples/run_suite.py` for a full working
+example (imports, `make_universe`).
 
 ## What's inside
 
@@ -91,6 +93,7 @@ flowchart LR
     YHO --> FEAT
     FEAT --> BARS
     CLI --> SYS
+    EX --> SYS
     BARS --> ENG
     SYS --> ENG
     ENG --> PF
