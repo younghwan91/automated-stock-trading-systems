@@ -50,7 +50,12 @@ plus Bensdorp position sizing (2% percent-risk capped by 10% percent-size, max
 [`docs/systems_spec.md`](docs/systems_spec.md). `examples/custom_system.py` adds
 an eighth (Donchian breakout) by subclassing `TradingSystem`.
 
-### Pipeline
+## Architecture
+
+`run_backtest()` (`backtest.py`) wires everything together as the single
+high-level entry point: universe → features/bars → `BacktestEngine` →
+`Portfolio` → `Metrics`. The CLI (`asts run|montecarlo|sensitivity|walkforward|list`)
+and the scripts under `examples/` are thin callers of the same function.
 
 ```mermaid
 flowchart LR
@@ -106,10 +111,7 @@ flowchart LR
     SYS --> AN
 ```
 
-`run_backtest()` (`backtest.py`) wires this together as the single high-level
-entry point: universe → features/bars → `BacktestEngine` → `Portfolio` →
-`Metrics`. The CLI (`asts run|montecarlo|sensitivity|walkforward|list`) and the
-scripts under `examples/` are thin callers of the same function.
+## Development
 
 ```bash
 pip install -e ".[dev]" && pytest    # 31 tests
