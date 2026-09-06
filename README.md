@@ -50,6 +50,67 @@ plus Bensdorp position sizing (2% percent-risk capped by 10% percent-size, max
 [`docs/systems_spec.md`](docs/systems_spec.md). `examples/custom_system.py` adds
 an eighth (Donchian breakout) by subclassing `TradingSystem`.
 
+### Pipeline
+
+```mermaid
+flowchart LR
+    subgraph Entry["Entry points"]
+        CLI["asts CLI\n(cli.py)"]
+        EX["examples/run_suite.py\nreal_data.py · robustness.py"]
+    end
+
+    subgraph Data["Universe"]
+        SYN["synthetic.make_universe\n(offline, reproducible)"]
+        YHO["yahoo.load_universe\n(yfinance, real prices)"]
+    end
+
+    subgraph Prep["Feature prep (backtest.py)"]
+        FEAT["features.compute_features"]
+        BARS["features.to_bars → Bars"]
+    end
+
+    SYS["systems.build_suite\n(System1..7 registry)"]
+
+    subgraph Engine["core.engine.BacktestEngine.run() — per trading day"]
+        E1["execute scheduled exits (MOO)"]
+        E2["execute pending entries"]
+        E3["check protective stops\n(ATR / trailing)"]
+        E4["execute scheduled exits (MOC)"]
+        E5["generate_signals:\nsystem.exit_signal / entry_signal\n+ position_sizing.calculate_shares"]
+        E1 --> E2 --> E3 --> E4 --> E5 --> E1
+    end
+
+    PF["core.portfolio.Portfolio\n(positions, cash, equity curve, closed trades)"]
+
+    subgraph Output["Results"]
+        MET["metrics.compute_metrics\n(CAGR, MAR, drawdown, ...)"]
+        PLOT["plotting.plot_tearsheet"]
+        CSV["equity / trade-ledger CSV"]
+        AN["analysis: montecarlo, sensitivity,\nwalkforward (re-run engine per trial)"]
+    end
+
+    CLI --> Data
+    EX --> Data
+    SYN --> FEAT
+    YHO --> FEAT
+    FEAT --> BARS
+    CLI --> SYS
+    BARS --> Engine
+    SYS --> Engine
+    Engine --> PF
+    PF --> MET
+    PF --> PLOT
+    PF --> CSV
+    MET --> AN
+    BARS --> AN
+    SYS --> AN
+```
+
+`run_backtest()` (`backtest.py`) wires this together as the single high-level
+entry point: universe → features/bars → `BacktestEngine` → `Portfolio` →
+`Metrics`. The CLI (`asts run|montecarlo|sensitivity|walkforward|list`) and the
+scripts under `examples/` are thin callers of the same function.
+
 ```bash
 pip install -e ".[dev]" && pytest    # 31 tests
 ```
