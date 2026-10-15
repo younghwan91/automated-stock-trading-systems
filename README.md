@@ -47,8 +47,21 @@ example (imports, `make_universe`).
 
 An event-driven daily engine with next-day execution, protective stops,
 slippage/commission modeling, and Bensdorp-style position sizing (2%
-percent-risk, max 10 positions/system). Rule tables for all seven systems:
-[`docs/systems_spec.md`](docs/systems_spec.md). `examples/custom_system.py`
+percent-risk, max 10 positions/system).
+
+### The 7 Non-Correlated Systems
+
+| System | Name | Style | Side | Edge & Entry Rule | Exit / Protection |
+|---|---|---|---|---|---|
+| **System 1** | Long Trend High Momentum | Trend | Long | SPY > SMA100, Stock SMA25 > SMA50; enter MOO on top 200d ROC | 25% trailing stop, 5×ATR initial stop |
+| **System 2** | Short RSI Thrust | Mean Reversion | Short | 2 up days, RSI(3) > 90; sell short limit +4% above prior close | +4% target (MOC) or 2-day time exit |
+| **System 3** | Long Mean Reversion Selloff | Mean Reversion | Long | Stock > SMA150, 3-day drop ≥ 12.5%; buy limit -7% below close | +4% target (MOC) or 3-day time exit |
+| **System 4** | Long Trend Low Volatility | Trend | Long | SPY > SMA200, HV(100) ∈ [10%, 40%], rank by lowest RSI(4) | 20% trailing stop, 1.5×ATR stop |
+| **System 5** | Long High ADX Reversal | Mean Reversion | Long | Close > SMA100+1×ATR, ADX(7) > 55, RSI(3) < 50; buy limit -3% | +1×ATR target (MOO) or 6-day time exit |
+| **System 6** | Short High Six-Day Surge | Mean Reversion | Short | 6-day gain ≥ 20%, 2 up closes; sell short limit +5% | +5% target (MOC) or 3-day time exit |
+| **System 7** | Catastrophe Hedge | Trend / Tail Risk | Short (SPY) | SPY close = 50-day low; covers tail-risk crashes (1987/2008) | Cover on 70-day SPY high |
+
+Full rule definitions: [`docs/systems_spec.md`](docs/systems_spec.md). `examples/custom_system.py`
 shows how to add your own by subclassing `TradingSystem`.
 
 ## Architecture
