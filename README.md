@@ -3,8 +3,6 @@
 [![CI](https://github.com/younghwan91/automated-stock-trading-systems/actions/workflows/ci.yml/badge.svg)](https://github.com/younghwan91/automated-stock-trading-systems/actions/workflows/ci.yml)
 [![Python](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12-blue)](https://www.python.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![GitHub stars](https://img.shields.io/github/stars/younghwan91/automated-stock-trading-systems?style=social)](https://github.com/younghwan91/automated-stock-trading-systems)
-[![GitHub forks](https://img.shields.io/github/forks/younghwan91/automated-stock-trading-systems?style=social)](https://github.com/younghwan91/automated-stock-trading-systems)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-younghwan--chae-0A66C2?logo=linkedin&logoColor=white)](https://www.linkedin.com/in/younghwan-chae/)
 
 An educational Python backtester for the **seven non-correlated trading
@@ -132,13 +130,11 @@ by the author or publisher. If the systems interest you, buy the book.
 Code is MIT ([`LICENSE`](LICENSE)). Backtested performance does not predict
 future results.
 
-## ⭐ Star History & Support
+## Issues & Contributing
 
-[![Star History Chart](https://api.star-history.com/svg?repos=younghwan91/automated-stock-trading-systems&type=Date)](https://star-history.com/#younghwan91/automated-stock-trading-systems&Date)
-
-If this reimplementation helps your systematic trading research, please consider giving it a **[⭐ Star](https://github.com/younghwan91/automated-stock-trading-systems)** on GitHub!
 - 🐛 Bugs & questions → [Issues](https://github.com/younghwan91/automated-stock-trading-systems/issues)
 - 📈 Updates → [Follow @younghwan91](https://github.com/younghwan91)
+
 
 ## Related projects — open-source quant stack
 
