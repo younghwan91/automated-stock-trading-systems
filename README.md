@@ -5,6 +5,11 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-younghwan--chae-0A66C2?logo=linkedin&logoColor=white)](https://www.linkedin.com/in/younghwan-chae/)
 
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/images/hero-dark.png">
+  <img alt="Normalised equity curves of the seven Bensdorp systems, each backtested alone on the synthetic universe" src="docs/images/hero-light.png" width="100%">
+</picture>
+
 An educational Python backtester for the **seven non-correlated trading
 systems** in Laurens Bensdorp's *Automated Stock Trading Systems* (Lioncrest,
 2020). Runs offline on a synthetic universe — no data vendor, no API key.
