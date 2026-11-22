@@ -1,9 +1,12 @@
-# Automated Stock Trading Systems (ASTS)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/images/brand/wordmark-dark.svg">
+  <img alt="Automated Stock Trading Systems (ASTS)" src="docs/images/brand/wordmark-light.svg" height="56">
+</picture>
 
-**Laurens Bensdorp's seven non-correlated trading systems, re-implemented as one
-Python backtester you can run in a minute — no data vendor, no API key.**
-An educational re-implementation from the book's published rules, not a
-trading product.
+**English** | [한국어](README.ko.md)
+
+**Laurens Bensdorp's seven non-correlated trading systems, re-implemented as one Python backtester you can run in a minute — no data vendor, no API key.**
+An educational re-implementation from the book's published rules, not a trading product.
 
 [![CI](https://github.com/younghwan91/automated-stock-trading-systems/actions/workflows/ci.yml/badge.svg)](https://github.com/younghwan91/automated-stock-trading-systems/actions/workflows/ci.yml)
 [![Python](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12-blue)](https://www.python.org/)
