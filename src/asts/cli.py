@@ -43,6 +43,23 @@ def _build_universe(args):
     return load_universe(symbols, args.start, args.end)
 
 
+def ascii_curve(equity, width: int = 60, height: int = 12) -> str:
+    """Render an equity series as a small text chart (no plotting dependency)."""
+    vals = [float(v) for v in equity]
+    if len(vals) < 2:
+        return ""
+    n = min(width, len(vals))
+    cols = [vals[int(i * (len(vals) - 1) / (n - 1))] for i in range(n)]
+    lo, hi = min(cols), max(cols)
+    span = (hi - lo) or 1.0
+    levels = [round((v - lo) / span * (height - 1)) for v in cols]
+    rows = []
+    for r in range(height - 1, -1, -1):
+        label = f"{lo + span * r / (height - 1):>12,.0f} |"
+        rows.append(label + "".join("*" if lv == r else " " for lv in levels))
+    return "\n".join(rows)
+
+
 def cmd_run(args) -> int:
     systems = build_suite(args.suite)
     universe = _build_universe(args)
@@ -62,6 +79,10 @@ def cmd_run(args) -> int:
     print()
     print(format_metrics(out.metrics))
     print(f"\nClosed trades: {len(out.trades)}")
+
+    if args.chart:
+        print("\nEquity curve")
+        print(ascii_curve(out.equity["total_equity"]))
 
     if args.csv:
         out.equity.to_csv(args.csv)
@@ -169,6 +190,7 @@ def build_parser() -> argparse.ArgumentParser:
     r.add_argument("--commission", type=float, default=0.0, help="flat $ per fill")
     r.add_argument("--csv", default="", help="write equity curve to CSV")
     r.add_argument("--trades-csv", default="", help="write trade ledger to CSV")
+    r.add_argument("--chart", action="store_true", help="print the equity curve as a text chart")
     r.add_argument("--plot", default="", help="write a PNG/SVG tear sheet to this path")
     r.set_defaults(func=cmd_run)
 
