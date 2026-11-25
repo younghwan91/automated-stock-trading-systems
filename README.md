@@ -9,7 +9,7 @@
 
 **Laurens Bensdorp's seven non-correlated trading systems, re-implemented as one Python backtester you can run in a minute — no data vendor, no API key.**
 
-An educational re-implementation from the book's published rules, not a trading product.
+An unofficial study companion to the book *Automated Stock Trading Systems* (Laurens Bensdorp, 2020): the book's published rules as runnable code, so you can watch each system trade. Not affiliated with or endorsed by the author or publisher; not a trading product.
 
 [![CI](https://github.com/younghwan91/automated-stock-trading-systems/actions/workflows/ci.yml/badge.svg)](https://github.com/younghwan91/automated-stock-trading-systems/actions/workflows/ci.yml)
 [![Python](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12-blue)](https://www.python.org/)
@@ -25,6 +25,26 @@ An educational re-implementation from the book's published rules, not a trading 
 </picture>
 
 <p align="center"><sub>Seven Bensdorp systems backtested individually on the synthetic universe (equity indexed to 100).</sub></p>
+
+## Try it
+
+One line, real prices, equity curve printed in your terminal (needs internet for the Yahoo download; no API key):
+
+```bash
+pip install -e ".[data]" && asts run --suite suite6 --symbols AAPL,MSFT,JPM --start 2010-01-01 --end 2019-12-31 --chart
+```
+
+It ends with the performance summary and a text chart of the account equity, for example:
+
+```text
+Equity curve
+     166,753 |                                                           *
+     142,479 |                                                ***  *
+     118,205 |                           *****  *******
+     100,000 |*************
+```
+
+(Excerpt of an actual run; a 3-stock hand-picked universe, so illustrative only.) Prefer fully offline? Use the quick start below.
 
 ## Quick start
 
@@ -86,6 +106,11 @@ asts run --suite suite6 --symbols AAPL,MSFT,JPM --start 2010-01-01 --end 2019-12
 | [`docs/results.md`](docs/results.md) | Synthetic suite metrics and tear sheet output |
 | [`docs/robustness.md`](docs/robustness.md) | Monte Carlo, sizing sensitivity, and walk-forward checks |
 | [`DISCLAIMER.md`](DISCLAIMER.md) | Research and educational use disclaimer |
+
+## More from the same author
+
+- [kiwoom-client](https://github.com/younghwan91/kiwoom-client): unofficial Python client for the Kiwoom REST API (182 endpoints, real-time WebSocket, MCP server).
+- [fin-checkup](https://github.com/younghwan91/fin-checkup): traffic-light financial check-up for Korean listed companies, with formulas and thresholds shown. Measurements only, no advice.
 
 ## Contributing
 
