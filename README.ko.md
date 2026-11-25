@@ -9,7 +9,7 @@
 
 **Laurens Bensdorp의 7가지 비상관 트레이딩 시스템을 하나의 Python 백테스터로 재구현했습니다 — 데이터 벤더나 API 키 없이 1분 만에 실행할 수 있습니다.**
 
-책에 공개된 규칙을 바탕으로 만든 교육용 재구현이며, 상용 트레이딩 제품이 아닙니다.
+책 *Automated Stock Trading Systems*(Laurens Bensdorp, 2020)의 비공식 학습용 동반 저장소입니다. 책에 공개된 규칙을 실행 가능한 코드로 옮겨, 각 시스템이 어떻게 거래하는지 직접 볼 수 있습니다. 저자나 출판사와 제휴하거나 보증받은 관계가 아니며, 트레이딩 제품도 아닙니다.
 
 [![CI](https://github.com/younghwan91/automated-stock-trading-systems/actions/workflows/ci.yml/badge.svg)](https://github.com/younghwan91/automated-stock-trading-systems/actions/workflows/ci.yml)
 [![Python](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12-blue)](https://www.python.org/)
@@ -25,6 +25,26 @@
 </picture>
 
 <p align="center"><sub>합성 유니버스에서 개별 백테스트한 7개 Bensdorp 시스템의 자산 곡선입니다 (초기 자산 100 기준).</sub></p>
+
+## 바로 실행해 보기
+
+한 줄로 실제 주가를 받아 터미널에 자산 곡선을 출력합니다(Yahoo 다운로드를 위해 인터넷이 필요하며, API 키는 필요 없습니다).
+
+```bash
+pip install -e ".[data]" && asts run --suite suite6 --symbols AAPL,MSFT,JPM --start 2010-01-01 --end 2019-12-31 --chart
+```
+
+마지막에 성과 요약과 계좌 자산의 텍스트 차트가 출력됩니다. 예를 들면 다음과 같습니다.
+
+```text
+Equity curve
+     166,753 |                                                           *
+     142,479 |                                                ***  *
+     118,205 |                           *****  *******
+     100,000 |*************
+```
+
+(실제 실행 결과의 발췌입니다. 직접 고른 3개 종목 유니버스이므로 예시일 뿐입니다.) 완전히 오프라인으로 실행하려면 아래 빠른 시작을 사용하세요.
 
 ## 빠른 시작
 
@@ -86,6 +106,11 @@ asts run --suite suite6 --symbols AAPL,MSFT,JPM --start 2010-01-01 --end 2019-12
 | [`docs/results.md`](docs/results.md) | 합성 유니버스 스위트 성과 표 및 티어 시트 |
 | [`docs/robustness.md`](docs/robustness.md) | 몬테카를로, 사이징 민감도, 워크포워드 검증 |
 | [`DISCLAIMER.md`](DISCLAIMER.md) | 연구 및 교육 목적 면책 조항 |
+
+## 같은 저자의 다른 저장소
+
+- [kiwoom-client](https://github.com/younghwan91/kiwoom-client): 키움 REST API 비공식 Python 클라이언트(엔드포인트 182개, 실시간 WebSocket, MCP 서버).
+- [fin-checkup](https://github.com/younghwan91/fin-checkup): 국내 상장사 신호등 재무 건강검진. 계산식과 경계값을 함께 보여 줍니다. 측정값만 제공하며 조언은 하지 않습니다.
 
 ## 기여
 
